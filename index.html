@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circle Architect - Retro Puzzle Gaming</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-yellow: #FFD700;
+            --primary-black: #000000;
+            --accent-yellow: #FFFF99;
+            --shadow-black: rgba(0, 0, 0, 0.8);
+            --text-shadow: 2px 2px 0px var(--primary-black);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Press Start 2P', monospace;
+            background: var(--primary-yellow);
+            color: var(--primary-black);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Pixel-perfect animations */
+        @keyframes pixelPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            0% { transform: translateX(-100px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideInRight {
+            0% { transform: translateX(100px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes pixelGlow {
+            0%, 100% { box-shadow: 0 0 10px var(--primary-black); }
+            50% { box-shadow: 0 0 20px var(--primary-black), 0 0 30px var(--accent-yellow); }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 50px 20px;
+            background: var(--primary-black);
+            color: var(--primary-yellow);
+            animation: slideInLeft 1s ease-out;
+        }
+
+        .logo {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: var(--text-shadow);
+            animation: pixelPulse 2s infinite;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .app-icon {
+            width: 120px;
+            height: 120px;
+            background: var(--primary-yellow);
+            border: 4px solid var(--primary-yellow);
+            border-radius: 20px;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            animation: pixelGlow 3s infinite;
+        }
+
+        /* Screenshot placeholder comments */
+        .app-icon::before {
+            content: "🎯";
+            /* ADD APP ICON IMAGE HERE */
+            /* Replace this emoji with: <img src="app-icon.png" alt="Circle Architect App Icon" /> */
+        }
+
+        /* Main content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section {
+            padding: 80px 0;
+            animation: floatUp 1s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .section:nth-child(odd) {
+            background: var(--primary-yellow);
+        }
+
+        .section:nth-child(even) {
+            background: var(--primary-black);
+            color: var(--primary-yellow);
+        }
+
+        .section-title {
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 50px;
+            text-shadow: var(--text-shadow);
+        }
+
+        .section:nth-child(even) .section-title {
+            text-shadow: 2px 2px 0px var(--primary-yellow);
+            color: var(--primary-black);
+        }
+
+        /* Game modes */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .game-card {
+            background: var(--primary-black);
+            color: var(--primary-yellow);
+            padding: 30px;
+            border-radius: 16px;
+            border: 3px solid var(--primary-yellow);
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section:nth-child(even) .game-card {
+            background: var(--primary-yellow);
+            color: var(--primary-black);
+            border-color: var(--primary-black);
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            animation: pixelGlow 1s infinite;
+        }
+
+        .game-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .game-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .game-description {
+            font-size: 12px;
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+
+        /* Screenshot sections */
+        .screenshots {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .screenshot-placeholder {
+            aspect-ratio: 9/16;
+            background: var(--primary-black);
+            border: 3px solid var(--primary-yellow);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-yellow);
+            font-size: 14px;
+            text-align: center;
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .screenshot-placeholder:hover {
+            transform: scale(1.05);
+        }
+
+        /* Features list */
+        .features-list {
+            list-style: none;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-list li {
+            background: var(--primary-black);
+            color: var(--primary-yellow);
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            border: 2px solid var(--primary-yellow);
+            font-size: 14px;
+            animation: slideInRight 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .features-list li:nth-child(even) {
+            animation: slideInLeft 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .section:nth-child(even) .features-list li {
+            background: var(--primary-yellow);
+            color: var(--primary-black);
+            border-color: var(--primary-black);
+        }
+
+        .features-list li::before {
+            content: "▸ ";
+            color: var(--accent-yellow);
+        }
+
+        /* CTA Button */
+        .cta-button {
+            display: inline-block;
+            background: var(--primary-black);
+            color: var(--primary-yellow);
+            padding: 20px 40px;
+            text-decoration: none;
+            border-radius: 12px;
+            border: 3px solid var(--primary-yellow);
+            font-size: 16px;
+            margin: 30px auto;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: pixelPulse 2s infinite;
+        }
+
+        .cta-button:hover {
+            background: var(--primary-yellow);
+            color: var(--primary-black);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px var(--shadow-black);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary-black);
+            color: var(--primary-yellow);
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .footer-links {
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            color: var(--primary-yellow);
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 12px;
+            border: 1px solid var(--primary-yellow);
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            background: var(--primary-yellow);
+            color: var(--primary-black);
+        }
+
+        .contact-info {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 32px;
+            }
+            
+            .section-title {
+                font-size: 24px;
+            }
+            
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .screenshots {
+                grid-template-columns: 1fr;
+            }
+            
+            .game-title {
+                font-size: 16px;
+            }
+        }
+
+        /* Scroll animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Loading animation */
+        .pixel-loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: var(--primary-yellow);
+            animation: pixelPulse 1s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <div class="app-icon">
+                <!-- ADD APP ICON HERE -->
+                <!-- Replace the emoji with: <img src="images/app-icon.png" alt="Circle Architect Icon" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px;"/> -->
+            </div>
+            <h1 class="logo">CIRCLE ARCHITECT</h1>
+            <p class="subtitle">Master the Art of Strategic Circle Placement</p>
+            <a href="#games" class="cta-button">DISCOVER THE GAMES</a>
+        </div>
+    </header>
+
+    <!-- Game Modes Section -->
+    <section class="section animate-on-scroll" id="games">
+        <div class="container">
+            <h2 class="section-title">THREE UNIQUE CHALLENGES</h2>
+            <div class="games-grid">
+                <div class="game-card">
+                    <span class="game-icon">🎯</span>
+                    <h3 class="game-title">PATTERN MATCH</h3>
+                    <p class="game-description">
+                        Test your memory and precision! Study fleeting patterns and recreate them perfectly. 
+                        Each level challenges your visual memory with increasingly complex designs.
+                    </p>
+                </div>
+                <div class="game-card">
+                    <span class="game-icon">🦠</span>
+                    <h3 class="game-title">INFECTION MODE</h3>
+                    <p class="game-description">
+                        Stop the viral outbreak! Clear infected circles before they spread across the grid. 
+                        Fast-paced survival gameplay that tests your strategic thinking under pressure.
+                    </p>
+                </div>
+                <div class="game-card">
+                    <span class="game-icon">🎨</span>
+                    <h3 class="game-title">ART MODE</h3>
+                    <p class="game-description">
+                        Express your creativity! Design beautiful patterns and share your artwork. 
+                        Premium users can export and share their creations with friends.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Screenshots Section -->
+    <section class="section animate-on-scroll">
+        <div class="container">
+            <h2 class="section-title">SEE IT IN ACTION</h2>
+            <div class="screenshots">
+                <div class="screenshot-placeholder">
+                    <!-- ADD PATTERN MATCH SCREENSHOT HERE -->
+                    <!-- <img src="images/pattern-match-screenshot.png" alt="Pattern Match gameplay" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px;"/> -->
+                    PATTERN MATCH<br>SCREENSHOT<br>PLACEHOLDER
+                </div>
+                <div class="screenshot-placeholder">
+                    <!-- ADD INFECTION MODE SCREENSHOT HERE -->
+                    <!-- <img src="images/infection-mode-screenshot.png" alt="Infection Mode gameplay" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px;"/> -->
+                    INFECTION MODE<br>SCREENSHOT<br>PLACEHOLDER
+                </div>
+                <div class="screenshot-placeholder">
+                    <!-- ADD ART MODE SCREENSHOT HERE -->
+                    <!-- <img src="images/art-mode-screenshot.png" alt="Art Mode creative interface" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px;"/> -->
+                    ART MODE<br>SCREENSHOT<br>PLACEHOLDER
+                </div>
+                <div class="screenshot-placeholder">
+                    <!-- ADD MAIN MENU SCREENSHOT HERE -->
+                    <!-- <img src="images/main-menu-screenshot.png" alt="Circle Architect main menu" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px;"/> -->
+                    MAIN MENU<br>SCREENSHOT<br>PLACEHOLDER
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section animate-on-scroll">
+        <div class="container">
+            <h2 class="section-title">PREMIUM FEATURES</h2>
+            <ul class="features-list">
+                <li style="animation-delay: 0.1s;">🚫 No Banner Ads - Clean, distraction-free interface</li>
+                <li style="animation-delay: 0.2s;">⚡ No Interruptions - Smooth gameplay without interstitial ads</li>
+                <li style="animation-delay: 0.3s;">🎨 Art Export - Share your creative masterpieces</li>
+                <li style="animation-delay: 0.4s;">🎮 Pure Gaming - Focus on what matters most - the games</li>
+                <li style="animation-delay: 0.5s;">🔄 Offline Play - Enjoy unlimited gameplay anywhere</li>
+            </ul>
+            <div style="text-align: center; margin-top: 50px;">
+                <a href="#download" class="cta-button">UPGRADE TO PRO</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section class="section animate-on-scroll" id="download">
+        <div class="container">
+            <h2 class="section-title">GET CIRCLE ARCHITECT</h2>
+            <div style="text-align: center;">
+                <p style="font-size: 16px; margin-bottom: 30px;">Available on iOS</p>
+                <!-- ADD APP STORE BADGE HERE -->
+                <!-- <a href="YOUR_APP_STORE_LINK" target="_blank"> -->
+                <!--     <img src="images/app-store-badge.png" alt="Download on App Store" style="height: 60px;"/> -->
+                <!-- </a> -->
+                <div class="screenshot-placeholder" style="max-width: 200px; margin: 0 auto; height: 60px;">
+                    APP STORE BADGE<br>PLACEHOLDER
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="terms.html">Terms & Conditions</a>
+                <a href="privacy.html">Privacy Policy</a>
+            </div>
+            <div class="contact-info">
+                <p>Contact: <a href="mailto:zeelworksmail@gmail.com" style="color: var(--accent-yellow);">zeelworksmail@gmail.com</a></p>
+            </div>
+            <p style="font-size: 10px; opacity: 0.6;">© 2024 Circle Architect. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll animation observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all elements with animate-on-scroll class
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add some interactive pixel effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click effects to game cards
+            document.querySelectorAll('.game-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+
+            // Add keyboard navigation for retro feel
+            document.addEventListener('keydown', function(e) {
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    window.scrollBy(0, window.innerHeight * 0.8);
+                }
+            });
+        });
+
+        // Pixel dust effect on mouse move
+        document.addEventListener('mousemove', function(e) {
+            if (Math.random() < 0.1) { // 10% chance to create pixel
+                const pixel = document.createElement('div');
+                pixel.className = 'pixel-loader';
+                pixel.style.position = 'fixed';
+                pixel.style.left = e.clientX + 'px';
+                pixel.style.top = e.clientY + 'px';
+                pixel.style.pointerEvents = 'none';
+                pixel.style.zIndex = '1000';
+                document.body.appendChild(pixel);
+                
+                setTimeout(() => {
+                    if (pixel.parentNode) {
+                        pixel.parentNode.removeChild(pixel);
+                    }
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
